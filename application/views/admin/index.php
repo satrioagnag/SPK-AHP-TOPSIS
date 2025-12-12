@@ -1,6 +1,5 @@
 <?php $this->load->view('layouts/header_admin'); ?>
 
-<?php if ($this->session->userdata('id_user_level') == '1') : ?>
     <div class="mb-4">
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -10,7 +9,7 @@
         <!-- Content Row -->
         <div class="alert alert-success">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            Selamat datang <span class="text-uppercase"><b><?= $this->session->nama; ?>!</b></span> Anda bisa mengoperasikan sistem dengan wewenang tertentu melalui pilihan menu di bawah.
+            Selamat datang <span class="text-uppercase"></b></span> Anda bisa mengoperasikan sistem dengan wewenang tertentu melalui pilihan menu di bawah.
         </div>
         <div class="row">
 
@@ -105,8 +104,6 @@
             </div>
         </div>
     </div>
-<?php endif; ?>
-<?php if ($this->session->userdata('id_user_level') == '2') : ?>
     <div class="mb-4">
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -166,6 +163,5 @@
             </div>
         </div>
     </div>
-<?php endif; ?>
 
 <?php $this->load->view('layouts/footer_admin'); ?>

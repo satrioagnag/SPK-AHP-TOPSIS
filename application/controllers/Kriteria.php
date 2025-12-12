@@ -12,14 +12,6 @@
             $this->load->model('Kriteria_model');
 			$this->load->model('Kriteria_ahp_model');
 
-            if ($this->session->userdata('id_user_level') != "1") {
-            ?>
-				<script type="text/javascript">
-                    alert('Anda tidak berhak mengakses halaman ini!');
-                    window.location='<?php echo base_url("Login/home"); ?>'
-                </script>
-            <?php
-			}
         }
 
         public function index()

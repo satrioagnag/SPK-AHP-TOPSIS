@@ -7,7 +7,6 @@
 	<!-- <a href="<?= base_url('Laporan/cetak_laporan_hasil'); ?>" class="btn btn-primary"> <i class="fa fa-print"></i> Cetak Data </a> -->
 </div>
 
-<?php if ($this->session->userdata('id_user_level') == '1') : ?>
 	<div class="card shadow mb-4">
 		<!-- /.card-header -->
 		<div class="card-header py-3">
@@ -47,7 +46,6 @@
 			</div>
 		</div>
 	</div>
-<?php elseif ($this->session->userdata('id_user_level') == '2') : ?>
 	<div class="card shadow mb-4">
 		<!-- /.card-header -->
 		<div class="card-header py-3">
@@ -90,7 +88,6 @@
 			</div>
 		</div>
 	</div>
-<?php endif; ?>
 
 <?php
 $this->load->view('layouts/footer_admin');
