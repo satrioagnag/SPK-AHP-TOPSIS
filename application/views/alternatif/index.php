@@ -1,22 +1,16 @@
 <?php $this->load->view('layouts/header_admin'); ?>
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-	<h1 class="h3 mb-0 text-gray-800"><i class="fas fa-fw fa-users"></i> Data Alternatif Kelas <?= $kelas->nama; ?></h1>
+	<h1 class="h3 mb-0 text-gray-800"><i class="fas fa-fw fa-users"></i> Data Alternatif</h1>
 
 	<div class="flex">
 		<a href="<?= base_url('Alternatif/create'); ?>" class="btn btn-success"> <i class="fa fa-plus"></i> Tambah Data </a>
-		<!-- <a href="#" class="btn btn-primary"> <span class="icon text-white-50">
-				<i class="fas fa-download"></i>
-			</span> Ekspor Data </a> -->
-
 	</div>
-
 </div>
 
 <?= $this->session->flashdata('message'); ?>
 
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Daftar Data Alternatif </h6>
 	</div>

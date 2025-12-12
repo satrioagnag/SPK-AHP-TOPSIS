@@ -1,15 +1,14 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Perhitungan_model extends CI_Model
 {
-
     public function get_kriteria()
     {
         $query = $this->db->get('kriteria');
         return $query->result();
     }
+
     public function get_alternatif()
     {
         $query = $this->db->get('alternatif');
@@ -22,9 +21,9 @@ class Perhitungan_model extends CI_Model
         return $query->row_array();
     }
 
-    public function get_hasil($id_kelas)
+    public function get_hasil()
     {
-        $query = $this->db->query("SELECT * FROM hasil inner join alternatif on hasil.id_alternatif = alternatif.id_alternatif WHERE alternatif.id_kelas = '$id_kelas' order by hasil.nilai DESC ;");
+        $query = $this->db->query("SELECT * FROM hasil INNER JOIN alternatif ON hasil.id_alternatif = alternatif.id_alternatif ORDER BY hasil.nilai DESC;");
         return $query->result();
     }
 
@@ -33,14 +32,6 @@ class Perhitungan_model extends CI_Model
         $query = $this->db->query("SELECT * FROM alternatif WHERE id_alternatif='$id_alternatif';");
         return $query->row_array();
     }
-
-    public function dataKelas($id_kelas)
-    {
-        $this->db->where('id_kelas', $id_kelas);
-        $query = $this->db->get('kelas');
-        return $query->row();
-    }
-
 
     public function insert_hasil($hasil_akhir = [])
     {
