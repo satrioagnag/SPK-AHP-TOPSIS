@@ -10,6 +10,13 @@ foreach ($alternatifs as $alternatif) :
 		$data_pencocokan = $this->Perhitungan_model->data_nilai($id_alternatif, $id_kriteria);
 		if (!is_null($data_pencocokan)) {
 			$nilai = $data_pencocokan['nilai'];
+			if ((int)$id_kriteria === 44) {
+    $nilai = 6 - $nilai;     // restore COST meaning
+    	//$nilai = pow($nilai, 2); // optional, if you still want stronger separation
+}	if ((int)$id_kriteria === 45) {   // <-- Location ID from your table
+    $nilai = 6 - $nilai;
+}
+
 			$matriks_x[$id_kriteria][$id_alternatif] = $nilai;
 		} else {
 			$matriks_x[$id_kriteria][$id_alternatif] = 0;

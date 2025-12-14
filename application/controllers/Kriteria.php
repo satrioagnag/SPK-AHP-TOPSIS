@@ -146,7 +146,7 @@
 				$jumlah_matrik_baris = $this->ahp_get_jumlah_matrik_baris($matrik_baris);
 				$hasil_tabel_konsistensi = $this->ahp_get_tabel_konsistensi($jumlah_matrik_baris, $prioritas);
 				if ($this->ahp_uji_konsistensi($hasil_tabel_konsistensi)) {
-					$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Nilai perbandingan : KONSISTEN!</div>');
+					
 					$i = 0;
 					foreach ($data['kriteria'] as $row) {
 						$params = array(

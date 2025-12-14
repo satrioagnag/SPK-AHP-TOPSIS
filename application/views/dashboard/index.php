@@ -7,10 +7,6 @@
     </div>
 
     <!-- Content Row -->
-    <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        Selamat datang di <b>Sistem Pendukung Keputusan Pemilihan Siswa Terbaik</b>. Anda dapat mengoperasikan sistem melalui menu di samping.
-    </div>
     <div class="row">
 
         <div class="col-xl-4 col-md-6 mb-4">
