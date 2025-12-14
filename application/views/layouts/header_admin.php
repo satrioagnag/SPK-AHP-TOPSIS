@@ -123,8 +123,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item">
               <span class="nav-link text-gray-600">
-                <img src="<?= base_url('assets/') ?>img/user.png" class="img-profile rounded-circle" style="width: 30px; height: 30px;">
-                <span class="ml-2 d-none d-lg-inline">Administrator</span>
+                <span class="ml-2 d-none d-lg-inline">Hi, THere!</span>
               </span>
             </li>
 
