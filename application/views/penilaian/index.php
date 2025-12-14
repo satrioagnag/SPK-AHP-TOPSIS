@@ -1,7 +1,7 @@
 <?php $this->load->view('layouts/header_admin'); ?>
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-	<h1 class="h3 mb-0 text-gray-800"><i class="fas fa-fw fa-edit"></i> Data Penilaian Kelas <?= $kelas->nama; ?></h1>
+	<h1 class="h3 mb-0 text-gray-800"><i class="fas fa-fw fa-edit"></i> Data Penilaian</h1>
 	<?php if ($data_excel > 0) : ?>
 		<div class="flex">
 			<a href="<?= base_url('Penilaian/format_excel'); ?>" class="btn btn-primary btn-icon-split ">
@@ -10,7 +10,7 @@
 				</span>
 				<span class="text">Format Excel </span>
 			</a>
-			<button type="button" class="btn btn-success btn-icon-split " data-toggle="modal" data-target="#modalImport" <?php if ($data_excel == 0) { ?> disabled <?php   } ?>>
+			<button type="button" class="btn btn-success btn-icon-split " data-toggle="modal" data-target="#modalImport">
 				<span class="icon text-white-50">
 					<i class="fas fa-file-upload"></i>
 				</span>
@@ -23,7 +23,6 @@
 <?= $this->session->flashdata('message'); ?>
 
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Daftar Data Penilaian</h6>
 	</div>
@@ -55,7 +54,7 @@
 							</td>
 						</tr>
 
-						<!-- Modal -->
+						<!-- Modal Input -->
 						<div class="modal fade" id="set<?= $keys->id_alternatif ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
@@ -64,7 +63,6 @@
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 									</div>
 									<?= form_open('Penilaian/tambah_penilaian') ?>
-
 									<div class="modal-body">
 										<?php foreach ($kriteria as $key) : ?>
 											<?php
@@ -94,7 +92,7 @@
 							</div>
 						</div>
 
-						<!-- Modal -->
+						<!-- Modal Edit -->
 						<div class="modal fade" id="edit<?= $keys->id_alternatif ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
@@ -143,7 +141,7 @@
 		</div>
 	</div>
 
-	<!-- Modal -->
+	<!-- Modal Import Excel -->
 	<div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="modalImport" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -168,6 +166,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- Batas Modal -->
+</div>
 
-	<?php $this->load->view('layouts/footer_admin'); ?>
+<?php $this->load->view('layouts/footer_admin'); ?>

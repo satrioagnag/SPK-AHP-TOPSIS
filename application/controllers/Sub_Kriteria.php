@@ -1,0 +1,66 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Sub_Kriteria extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('pagination');
+        $this->load->library('form_validation');
+        $this->load->model('Sub_Kriteria_model');
+        $this->load->model('Kriteria_model');
+    }
+
+    public function index()
+    {
+        $data['page'] = "Sub Kriteria";
+        $data['list'] = $this->Sub_Kriteria_model->tampil();
+        $data['kriteria'] = $this->Sub_Kriteria_model->get_kriteria();
+        $this->load->view('sub_kriteria/index', $data);
+    }
+
+    public function store()
+    {
+        $data = [
+            'id_kriteria' => $this->input->post('id_kriteria'),
+            'deskripsi' => $this->input->post('deskripsi'),
+            'nilai' => $this->input->post('nilai')
+        ];
+
+        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required');
+        $this->form_validation->set_rules('nilai', 'Nilai', 'required');
+
+        if ($this->form_validation->run() != false) {
+            $result = $this->Sub_Kriteria_model->insert($data);
+            if ($result) {
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil disimpan!</div>');
+                redirect('Sub_Kriteria');
+            }
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data gagal disimpan!</div>');
+            redirect('Sub_Kriteria');
+        }
+    }
+
+    public function update($id_sub_kriteria)
+    {
+        $id_sub_kriteria = $this->input->post('id_sub_kriteria');
+        $data = array(
+            'id_kriteria' => $this->input->post('id_kriteria'),
+            'deskripsi' => $this->input->post('deskripsi'),
+            'nilai' => $this->input->post('nilai')
+        );
+
+        $this->Sub_Kriteria_model->update($id_sub_kriteria, $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil diupdate!</div>');
+        redirect('Sub_Kriteria');
+    }
+
+    public function destroy($id_sub_kriteria)
+    {
+        $this->Sub_Kriteria_model->delete($id_sub_kriteria);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil dihapus!</div>');
+        redirect('Sub_Kriteria');
+    }
+}

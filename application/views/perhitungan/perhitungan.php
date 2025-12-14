@@ -5,16 +5,13 @@ $this->load->view('layouts/header_admin');
 $matriks_x = array();
 foreach ($alternatifs as $alternatif) :
 	foreach ($kriterias as $kriteria) :
-
 		$id_alternatif = $alternatif->id_alternatif;
 		$id_kriteria = $kriteria->id_kriteria;
-
 		$data_pencocokan = $this->Perhitungan_model->data_nilai($id_alternatif, $id_kriteria);
 		if (!is_null($data_pencocokan)) {
 			$nilai = $data_pencocokan['nilai'];
 			$matriks_x[$id_kriteria][$id_alternatif] = $nilai;
 		} else {
-
 			$matriks_x[$id_kriteria][$id_alternatif] = 0;
 		}
 	endforeach;
@@ -23,101 +20,77 @@ endforeach;
 //Matriks Ternormalisasi (R)
 $matriks_r = array();
 foreach ($matriks_x as $id_kriteria => $penilaians) :
-
 	$jumlah_kuadrat = 0;
 	foreach ($penilaians as $penilaian) :
 		$jumlah_kuadrat += pow($penilaian, 2);
 	endforeach;
 	$akar_kuadrat = sqrt($jumlah_kuadrat);
-
 	foreach ($penilaians as $id_alternatif => $penilaian) :
 		$matriks_r[$id_kriteria][$id_alternatif] = $penilaian / $akar_kuadrat;
 	endforeach;
-
 endforeach;
 
 //Matriks Y
 $matriks_y = array();
 foreach ($alternatifs as $alternatif) :
 	foreach ($kriterias as $kriteria) :
-
 		$bobot = $kriteria->bobot;
 		$id_alternatif = $alternatif->id_alternatif;
 		$id_kriteria = $kriteria->id_kriteria;
-
 		$nilai_r = $matriks_r[$id_kriteria][$id_alternatif];
 		$matriks_y[$id_kriteria][$id_alternatif] = $bobot * $nilai_r;
-
 	endforeach;
 endforeach;
 
-//Solusi Ideal Positif & Negarif
+//Solusi Ideal Positif & Negatif
 $solusi_ideal_positif = array();
 $solusi_ideal_negatif = array();
 foreach ($kriterias as $kriteria) :
-
 	$id_kriteria = $kriteria->id_kriteria;
 	$type_kriteria = $kriteria->jenis;
-
 	$nilai_max = @(max($matriks_y[$id_kriteria]));
 	$nilai_min = @(min($matriks_y[$id_kriteria]));
-
+	
 	if ($type_kriteria == 'Benefit') :
 		$s_i_p = $nilai_max;
 		$s_i_n = $nilai_min;
-	elseif ($type_kriteria == 'Cost') :
+	else :
 		$s_i_p = $nilai_min;
 		$s_i_n = $nilai_max;
 	endif;
-
+	
 	$solusi_ideal_positif[$id_kriteria] = $s_i_p;
 	$solusi_ideal_negatif[$id_kriteria] = $s_i_n;
-
 endforeach;
 
 //Jarak Ideal Positif & Negatif
 $jarak_ideal_positif = array();
 $jarak_ideal_negatif = array();
 foreach ($alternatifs as $alternatif) :
-
 	$id_alternatif = $alternatif->id_alternatif;
 	$jumlah_kuadrat_jip = 0;
 	$jumlah_kuadrat_jin = 0;
-
-	// Mencari penjumlahan kuadrat
 	foreach ($matriks_y as $id_kriteria => $penilaians) :
-
 		$hsl_pengurangan_jip = $penilaians[$id_alternatif] - $solusi_ideal_positif[$id_kriteria];
 		$hsl_pengurangan_jin = $penilaians[$id_alternatif] - $solusi_ideal_negatif[$id_kriteria];
-
 		$jumlah_kuadrat_jip += pow($hsl_pengurangan_jip, 2);
 		$jumlah_kuadrat_jin += pow($hsl_pengurangan_jin, 2);
-
 	endforeach;
-
-	// Mengakarkan hasil penjumlahan kuadrat
 	$akar_kuadrat_jip = sqrt($jumlah_kuadrat_jip);
 	$akar_kuadrat_jin = sqrt($jumlah_kuadrat_jin);
-
-	// Memasukkan ke array matriks jip & jin
 	$jarak_ideal_positif[$id_alternatif] = $akar_kuadrat_jip;
 	$jarak_ideal_negatif[$id_alternatif] = $akar_kuadrat_jin;
-
 endforeach;
 
 //Kedekatan Relatif Terhadap Solusi Ideal (V)
 $kedekatan_relatif = array();
 foreach ($alternatifs as $alternatif) :
-
 	$s_negatif = $jarak_ideal_negatif[$alternatif->id_alternatif];
 	$s_positif = $jarak_ideal_positif[$alternatif->id_alternatif];
-
 	$nilai_v = @($s_negatif / ($s_positif + $s_negatif));
-
 	$kedekatan_relatif[$alternatif->id_alternatif]['id_alternatif'] = $alternatif->id_alternatif;
 	$kedekatan_relatif[$alternatif->id_alternatif]['nama'] = $alternatif->nama;
 	$kedekatan_relatif[$alternatif->id_alternatif]['nilai'] = $nilai_v;
-
 endforeach;
 ?>
 
@@ -126,11 +99,9 @@ endforeach;
 </div>
 
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Matrix Keputusan (X)</h6>
 	</div>
-
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" width="100%" cellspacing="0">
@@ -171,11 +142,9 @@ endforeach;
 </div>
 
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Bobot Kriteria (W)</h6>
 	</div>
-
 	<div class="card-body">
 		<div class="alert alert-danger text-justify">
 			Bobot kriteria didapatkan dari perhitungan menggunakan metode <b>AHP</b>. Silahkan menuju ke halaman <a href="<?= base_url('') ?>Kriteria/prioritas" class="btn btn-info">Kriteria</a> untuk melihat proses perhitungan.
@@ -205,13 +174,10 @@ endforeach;
 	</div>
 </div>
 
-
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Matriks Ternormalisasi (R)</h6>
 	</div>
-
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" width="100%" cellspacing="0">
@@ -251,13 +217,10 @@ endforeach;
 	</div>
 </div>
 
-
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Matriks Y</h6>
 	</div>
-
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" width="100%" cellspacing="0">
@@ -298,11 +261,9 @@ endforeach;
 </div>
 
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Solusi Ideal Positif (A+)</h6>
 	</div>
-
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" width="100%" cellspacing="0">
@@ -331,11 +292,9 @@ endforeach;
 </div>
 
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Solusi Ideal Negatif (A-)</h6>
 	</div>
-
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" width="100%" cellspacing="0">
@@ -364,11 +323,9 @@ endforeach;
 </div>
 
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Jarak Ideal Positif (S<sub>i</sub>+)</h6>
 	</div>
-
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" width="100%" cellspacing="0">
@@ -403,11 +360,9 @@ endforeach;
 </div>
 
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Jarak Ideal Negatif (S<sub>i</sub>-)</h6>
 	</div>
-
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" width="100%" cellspacing="0">
@@ -442,11 +397,9 @@ endforeach;
 </div>
 
 <div class="card shadow mb-4">
-	<!-- /.card-header -->
 	<div class="card-header py-3">
 		<h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Kedekatan Relatif Terhadap Solusi Ideal (V)</h6>
 	</div>
-
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" width="100%" cellspacing="0">

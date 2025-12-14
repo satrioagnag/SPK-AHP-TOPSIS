@@ -1,10 +1,8 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Penilaian_model extends CI_Model
 {
-
     public function tampil()
     {
         $query = $this->db->query("SELECT * FROM penilaian");
@@ -34,9 +32,10 @@ class Penilaian_model extends CI_Model
         $query = $this->db->get('kriteria');
         return $query->result();
     }
-    public function get_alternatif($id_kelas)
+
+    public function get_alternatif()
     {
-        $query = $this->db->query("SELECT * FROM alternatif where id_kelas ='$id_kelas'");
+        $query = $this->db->query("SELECT * FROM alternatif");
         return $query->result();
     }
 
@@ -70,32 +69,21 @@ class Penilaian_model extends CI_Model
         return $query->row_array();
     }
 
-    //menghitung id_alternatif yang belum ada di tabel penilaian berdasarkan id kelas
-    public function tombol_excel($id_kelas)
+    public function tombol_excel()
     {
-        $query = $this->db->query("SELECT id_alternatif FROM alternatif WHERE id_kelas ='$id_kelas' and id_alternatif NOT IN (SELECT id_alternatif FROM penilaian)");
+        $query = $this->db->query("SELECT id_alternatif FROM alternatif WHERE id_alternatif NOT IN (SELECT id_alternatif FROM penilaian)");
         return $query->num_rows();
     }
 
-    //mengambil data yang akan dimuat pda fungsi format excel berdasarkan id kelas
-    public function format_excel($id_kelas)
+    public function format_excel()
     {
-        $query = $this->db->query("SELECT id_alternatif, nama FROM alternatif WHERE id_kelas ='$id_kelas' and id_alternatif NOT IN (SELECT id_alternatif FROM penilaian)");
+        $query = $this->db->query("SELECT id_alternatif, nama FROM alternatif WHERE id_alternatif NOT IN (SELECT id_alternatif FROM penilaian)");
         return $query->result();
     }
 
-    //menyimpan data dari proses import file excel
     public function import_excel($data)
     {
         $query = $this->db->insert_batch('penilaian', $data);
         return $query;
-    }
-
-    //mengambil data kelas
-    public function dataKelas($id_kelas)
-    {
-        $this->db->where('id_kelas', $id_kelas);
-        $query = $this->db->get('kelas');
-        return $query->row();
     }
 }

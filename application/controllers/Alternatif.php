@@ -1,50 +1,38 @@
 <?php
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Alternatif extends CI_Controller
 {
-
     public function __construct()
     {
         parent::__construct();
         $this->load->library('pagination');
         $this->load->library('form_validation');
         $this->load->model('Alternatif_model');
-
     }
 
     public function index()
     {
-        $id_kelas = $this->session->userdata('id_kelas');
         $data = [
             'page' => "Alternatif",
-            'list' => $this->Alternatif_model->tampil($id_kelas),
-            'kelas' => $this->Alternatif_model->dataKelas($id_kelas)
-
+            'list' => $this->Alternatif_model->tampil()
         ];
         $this->load->view('alternatif/index', $data);
     }
 
-    //menampilkan view create
     public function create()
     {
         $data['page'] = "Alternatif";
         $this->load->view('alternatif/create', $data);
     }
 
-    //menambahkan data ke database
     public function store()
     {
         $data = [
-            'nama' => $this->input->post('nama'),
-            // 'id_kelas' => $this->input->post('kelas')
+            'nama' => $this->input->post('nama')
         ];
 
-        $data['id_kelas'] = $this->session->userdata('id_kelas');
-
         $this->form_validation->set_rules('nama', 'Nama', 'required');
-        // $this->form_validation->set_rules('kelas', 'Kelas', 'required');
 
         if ($this->form_validation->run() != false) {
             $result = $this->Alternatif_model->insert($data);
